@@ -1,4 +1,5 @@
 #! /usr/bin/env python
+# -*- coding: latin-1 -*-
 import os
 import random
 import sys
@@ -12,7 +13,6 @@ from extras import *
 from funcionesVACIAS import *
 
 #Funcion principal
-
 
 def main():
     #Centrar la ventana y despues inicializar pygame
@@ -39,19 +39,19 @@ def main():
     casi = []
     gano = False
 
-    archivo = open("lemario.txt", "r")
+    archivo = open("./pygameUNGS/lemario.txt", "r")
     #lectura del diccionario
-    # LARGO
-    lectura(archivo, listaPalabrasDiccionario, 5)
+
+    lectura(archivo, listaPalabrasDiccionario, LARGO)
 
     #elige una al azar
     palabraCorrecta = nuevaPalabra(listaPalabrasDiccionario)
 
-    dibujar(screen, ListaDePalabrasUsuario, palabraUsuario, puntos, segundos, gano, correctas, incorrectas, casi)
+    intentos = 5
+
+    dibujar(screen, ListaDePalabrasUsuario, palabraUsuario, puntos, segundos, gano, correctas, incorrectas, casi, intentos, palabraCorrecta)
 
     print(palabraCorrecta)
-
-    intentos = 5
 
     while segundos > fps/1000 and intentos > 0 and not gano:
         # 1 frame cada 1/fps segundos
@@ -89,7 +89,7 @@ def main():
         screen.fill(COLOR_FONDO)
 
         #Dibujar de nuevo todo
-        dibujar(screen, ListaDePalabrasUsuario, palabraUsuario, puntos, segundos, gano, correctas, incorrectas, casi)
+        dibujar(screen, ListaDePalabrasUsuario, palabraUsuario, puntos, segundos, gano, correctas, incorrectas, casi, intentos, palabraCorrecta)
 
         pygame.display.flip()
 
@@ -101,7 +101,6 @@ def main():
                 return
 
     archivo.close()
-
 
 #Programa Principal ejecuta Main
 if __name__ == "__main__":

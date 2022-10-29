@@ -8,7 +8,7 @@ import math
 def nuevaPalabra(lista):
     largoLista = len(lista)
     numeroRandom = random.randint(0, largoLista)
-    print(lista[numeroRandom])
+    # print(lista[numeroRandom])
     return lista[numeroRandom]
 
 # lee el archivo, y elije las letras que sean del largo especificado
@@ -16,8 +16,7 @@ def nuevaPalabra(lista):
 def lectura(archivo, salida, largo):
     for palabra in archivo :
         if len(palabra) == largo:
-            salida.append(palabra)
-    return salida
+            salida.append(palabra[:-1])
 
 # chequea si la palabra ingresada por el usuario es correcta o no lo es, y las carga respectivamente a sus listas
 
