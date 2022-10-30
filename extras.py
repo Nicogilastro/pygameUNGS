@@ -1,5 +1,5 @@
 # from curses import COLOR_RED
-# -*- coding: latin-1 -*-
+# -*- coding: utf-8 -*-
 import pygame
 from funcionesVACIAS import *
 from pygame.locals import *
@@ -35,8 +35,8 @@ def dameLetraApretada(key):
         return ("m")
     elif key == K_n:
         return ("n")
-    # elif key == u'ñ'59:
-        # return ("ñ")
+    elif key == 59:
+        return ("ñ")
     elif key == K_o:
         return ("o")
     elif key == K_p:
@@ -81,15 +81,24 @@ def dibujar(screen, listaDePalabrasUsuario, palabraUsuario, puntos, segundos, ga
     # end screen when win
 
     def ganaste():
+        pygame.mixer.music.stop()
+        mta = pygame.mixer.Sound('./pygameUNGS/sonidos/mta.mp3')
+        mta.set_volume(1)
+        mta.play(-1)
         text = defaultFontGrande.render("Ganaste!", True, COLOR_VERDE)
         text_rect = text.get_rect()
         text_x = screen.get_width() / 2 - text_rect.width / 2
         text_y = screen.get_height() / 2 - text_rect.height / 2
         screen.blit(text, [text_x, text_y])
+        
 
     # end screen when loss
 
     def perdiste():
+        pygame.mixer.music.stop()
+        loss = pygame.mixer.Sound('./pygameUNGS/sonidos/loss.mp3')
+        loss.set_volume(1)
+        loss.play()
         text = defaultFont.render("Perdiste, la palabra correcta era: " + palabraCorrecta, True, COLOR_RED)
         text_rect = text.get_rect()
         text_x = screen.get_width() / 2 - text_rect.width / 2
@@ -104,6 +113,10 @@ def dibujar(screen, listaDePalabrasUsuario, palabraUsuario, puntos, segundos, ga
     screen.blit(defaultFont.render(palabraUsuario, 1, COLOR_TEXTO), (190, 570))
     #muestra el puntaje
     screen.blit(defaultFont.render("Puntos: " + str(puntos), 1, COLOR_TEXTO), (680, 10))
+    #muestra el largo de la palabra
+    screen.blit(defaultFont.render("Largo de la Palabra: " + str(LARGO - 1), 1, COLOR_TEXTO), (300, 10))
+    #muestra los intentos
+    screen.blit(defaultFont.render("Intentos: " + str(intentos), 1, COLOR_TEXTO), (680, 30))
     #muestra los segundos y puede cambiar de color con el tiempo
 
     if segundos < 15 :
@@ -116,44 +129,29 @@ def dibujar(screen, listaDePalabrasUsuario, palabraUsuario, puntos, segundos, ga
     #muestra las palabras anteriores, las que se fueron arriesgando
     pos = 0
     for palabra in listaDePalabrasUsuario:
-        screen.blit(defaultFontGrande.render(palabra, 1, COLOR_LETRAS),
-                    (ANCHO//2-len(palabra)*TAMANNO_LETRA_GRANDE//4, 20 + 80 * pos))
+        screen.blit(defaultFontGrande.render(palabra, 1, COLOR_LETRAS),(ANCHO//2-len(palabra)*TAMANNO_LETRA_GRANDE//4, 30 + 80 * pos))
         pos += 1
 
     #muestra el abcdario, falta ponerle color a las letras
-    abcdario = ["qwertyuiop", "asdfghjklm", "zxcvbnm"]
+    abcdario = ["qwertyuiop", "asdfghjklñ", "zxcvbnm"]
     y = 0
     for abc in abcdario:
         x = 0
         for letra in abc:
             color = COLOR_TEXTO
-            screen.blit(defaultFont.render(letra, 1, color),
-                        (10 + x, ALTO/1.5 + y))
-            if letraEnCasi(letra, casi):
-                contadorDeMatches = sum(sum(1 for x in e if e.count(x) > 1)for e in zip(*palabraUsuario))
-                if contadorDeMatches > 1:
-                    color = COLOR_LETRAS
-                    screen.blit(defaultFont.render(letra, 1, color), (10 + x, ALTO/1.5 + y))
-                else:
-                    color = COLOR_AZUL
-                    screen.blit(defaultFont.render(letra, 1, color), (10 + x, ALTO/1.5 + y))
-            elif not letraEnCasi(letra, casi):
+            screen.blit(defaultFont.render(letra, 1, color),(10 + x, ALTO/1.5 + y))
+            if letra in correctas:
+                ding()
+                color = COLOR_LETRAS
+                screen.blit(defaultFont.render(letra, 1, color), (10 + x, ALTO/1.5 + y))
+            elif letra in incorrectas:
+                dong()
                 color = COLOR_RED
+                screen.blit(defaultFont.render(letra, 1, color), (10 + x, ALTO/1.5 + y))
+            elif letra in casi:
+                dung()
+                color = COLOR_AZUL
                 screen.blit(defaultFont.render(letra, 1, color),(10 + x, ALTO/1.5 + y))
-            
-            # for i in range(len(palabraCorrecta)) :
-            #         for j in range(len(palabraUsuario)):
-            #             if palabraCorrecta[i] == palabraUsuario[j]:
-            #                 color = COLOR_LETRAS
-            #                 screen.blit(defaultFont.render(letra, 1, color), (10 + x, ALTO/1.5 + y))
-            #             for letra in palabraUsuario:
-            #                 if letra in palabraCorrecta:
-            #                     color = COLOR_AZUL
-            #                     screen.blit(defaultFont.render(letra, 1, color), (10 + x, ALTO/1.5 + y))
-            #             if not letraEnCasi(letra, casi):
-            #                 color = COLOR_RED
-            #                 screen.blit(defaultFont.render(letra, 1, color),(10 + x, ALTO/1.5 + y))
-        
 
             x += TAMANNO_LETRA
         y += TAMANNO_LETRA
@@ -161,7 +159,7 @@ def dibujar(screen, listaDePalabrasUsuario, palabraUsuario, puntos, segundos, ga
     if gano:
         ganaste()
     else:
-        if intentos == 0:
+        if intentos == 0 and palabraUsuario != palabraCorrecta:
             perdiste()
         if segundos < 1:
             perdiste()

@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-# -*- coding: latin-1 -*-
+# -*- coding: utf-8 -*-
 import os
 import random
 import sys
@@ -40,6 +40,7 @@ def main():
     gano = False
 
     archivo = open("./pygameUNGS/lemario.txt", "r")
+    
     #lectura del diccionario
 
     lectura(archivo, listaPalabrasDiccionario, LARGO)
@@ -47,6 +48,11 @@ def main():
     #elige una al azar
     palabraCorrecta = nuevaPalabra(listaPalabrasDiccionario)
 
+    # musica de fondo
+
+    music = pygame.mixer.music.load('./pygameUNGS/sonidos/bg-music.mp3')
+    pygame.mixer.music.set_volume(0.04)
+    pygame.mixer.music.play(-1)
     intentos = 5
 
     dibujar(screen, ListaDePalabrasUsuario, palabraUsuario, puntos, segundos, gano, correctas, incorrectas, casi, intentos, palabraCorrecta)

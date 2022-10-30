@@ -1,5 +1,4 @@
-# from curses import COLOR_RED
-
+# -*- coding: utf-8 -*-
 
 TAMANNO_LETRA = 20
 TAMANNO_LETRA_GRANDE = 70
