@@ -4,8 +4,7 @@ import pygame
 from funcionesVACIAS import *
 from pygame.locals import *
 from configuracion import *
-
-
+    
 def dameLetraApretada(key):
     if key == K_a:
         return ("a")
@@ -70,7 +69,6 @@ def dameLetraApretada(key):
     else:
         return ("")
 
-
 def dibujar(screen, listaDePalabrasUsuario, palabraUsuario, puntos, segundos, gano,
             correctas, incorrectas, casi, intentos, palabraCorrecta):
     defaultFont = pygame.font.Font(
@@ -82,7 +80,7 @@ def dibujar(screen, listaDePalabrasUsuario, palabraUsuario, puntos, segundos, ga
 
     def ganaste():
         pygame.mixer.music.stop()
-        mta = pygame.mixer.Sound('./pygameUNGS/sonidos/mta.mp3')
+        mta = pygame.mixer.Sound('./sonidos/mta.mp3')
         mta.set_volume(1)
         mta.play(-1)
         text = defaultFontGrande.render("Ganaste!", True, COLOR_VERDE)
@@ -91,12 +89,11 @@ def dibujar(screen, listaDePalabrasUsuario, palabraUsuario, puntos, segundos, ga
         text_y = screen.get_height() / 2 - text_rect.height / 2
         screen.blit(text, [text_x, text_y])
         
-
     # end screen when loss
 
     def perdiste():
         pygame.mixer.music.stop()
-        loss = pygame.mixer.Sound('./pygameUNGS/sonidos/loss.mp3')
+        loss = pygame.mixer.Sound('./sonidos/loss.mp3')
         loss.set_volume(1)
         loss.play()
         text = defaultFont.render("Perdiste, la palabra correcta era: " + palabraCorrecta, True, COLOR_RED)
@@ -135,21 +132,19 @@ def dibujar(screen, listaDePalabrasUsuario, palabraUsuario, puntos, segundos, ga
     #muestra el abcdario, falta ponerle color a las letras
     abcdario = ["qwertyuiop", "asdfghjklñ", "zxcvbnm"]
     y = 0
+
     for abc in abcdario:
         x = 0
         for letra in abc:
             color = COLOR_TEXTO
             screen.blit(defaultFont.render(letra, 1, color),(10 + x, ALTO/1.5 + y))
             if letra in correctas:
-                ding()
                 color = COLOR_LETRAS
                 screen.blit(defaultFont.render(letra, 1, color), (10 + x, ALTO/1.5 + y))
             elif letra in incorrectas:
-                dong()
                 color = COLOR_RED
                 screen.blit(defaultFont.render(letra, 1, color), (10 + x, ALTO/1.5 + y))
             elif letra in casi:
-                dung()
                 color = COLOR_AZUL
                 screen.blit(defaultFont.render(letra, 1, color),(10 + x, ALTO/1.5 + y))
 

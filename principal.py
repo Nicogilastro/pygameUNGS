@@ -39,8 +39,8 @@ def main():
     casi = []
     gano = False
 
-    archivo = open("./pygameUNGS/lemario.txt", "r")
-    
+    archivo = open("./lemario.txt", "r")
+
     #lectura del diccionario
 
     lectura(archivo, listaPalabrasDiccionario, LARGO)
@@ -50,8 +50,8 @@ def main():
 
     # musica de fondo
 
-    music = pygame.mixer.music.load('./pygameUNGS/sonidos/bg-music.mp3')
-    pygame.mixer.music.set_volume(0.04)
+    music = pygame.mixer.music.load('./sonidos/gta.mp3')
+    pygame.mixer.music.set_volume(0.02)
     pygame.mixer.music.play(-1)
     intentos = 5
 
@@ -84,7 +84,8 @@ def main():
                 if e.key == K_RETURN:
                     #falta hacer un control para que sea una palabra de la longitud deseada
                     #falta controlar que la palabra este en el diccionario
-                    gano = revision(palabraCorrecta, palabraUsuario, correctas, incorrectas, casi)
+                    gano = revision(palabraCorrecta, palabraUsuario,
+                                    correctas, incorrectas, casi)
                     ListaDePalabrasUsuario.append(palabraUsuario)
                     palabraUsuario = ""
                     intentos -= 1
@@ -107,6 +108,7 @@ def main():
                 return
 
     archivo.close()
+
 
 #Programa Principal ejecuta Main
 if __name__ == "__main__":
