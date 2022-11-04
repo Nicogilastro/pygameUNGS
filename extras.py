@@ -76,22 +76,46 @@ def dibujar(screen, listaDePalabrasUsuario, palabraUsuario, puntos, segundos, ga
     defaultFontGrande = pygame.font.Font(
         pygame.font.get_default_font(), TAMANNO_LETRA_GRANDE)
 
+    # botones para la pantalla de reinicio
+
+    def botones():
+        pygame.draw.rect(screen, COLOR_AZUL, [400, 400, 155 , 30])
+        pygame.draw.rect(screen, COLOR_AZUL, [280, 400, 60 , 30])
+        text = defaultFont.render('Jugar otra vez!' , True , COLOR_BLANCO)
+        text2 = defaultFont.render('Salir' , True , COLOR_BLANCO)
+        screen.blit(text , (405 , 405))
+        screen.blit(text2 , (285 , 405))
+        # get all events
+        ev = pygame.event.get()
+
+        # proceed events
+        for event in ev:
+            # handle MOUSEBUTTONUP
+            if event.type == pygame.MOUSEBUTTONUP:
+                mouse = pygame.mouse.get_pos()
+
+            # get a list of all sprites that are under the mouse cursor
+            # clicked_sprites = [s for s in sprites if s.rect.collidepoint(pos)]
+            # do something with the clicked sprites...
     # end screen when win
 
     def ganaste():
+        screen = pygame.display.set_mode((ANCHO, ALTO))
         pygame.mixer.music.stop()
         mta = pygame.mixer.Sound('./sonidos/mta.mp3')
         mta.set_volume(1)
         mta.play(-1)
-        text = defaultFontGrande.render("Ganaste!", True, COLOR_VERDE)
+        text = defaultFont.render("Ganaste!, la palabra correcta era: " + palabraCorrecta, True, COLOR_VERDE)
         text_rect = text.get_rect()
         text_x = screen.get_width() / 2 - text_rect.width / 2
         text_y = screen.get_height() / 2 - text_rect.height / 2
         screen.blit(text, [text_x, text_y])
+        botones()
         
     # end screen when loss
 
     def perdiste():
+        screen = pygame.display.set_mode((ANCHO, ALTO))
         pygame.mixer.music.stop()
         loss = pygame.mixer.Sound('./sonidos/loss.mp3')
         loss.set_volume(1)
@@ -101,10 +125,10 @@ def dibujar(screen, listaDePalabrasUsuario, palabraUsuario, puntos, segundos, ga
         text_x = screen.get_width() / 2 - text_rect.width / 2
         text_y = screen.get_height() / 2 - text_rect.height / 2
         screen.blit(text, [text_x, text_y])
+        botones()
 
     #Linea Horizontal
-    pygame.draw.line(screen, (255, 255, 255),
-                     (0, ALTO-70), (ANCHO, ALTO-70), 5)
+    pygame.draw.line(screen, (255, 255, 255), (0, ALTO-70), (ANCHO, ALTO-70), 5)
 
     #muestra lo que escribe el jugador
     screen.blit(defaultFont.render(palabraUsuario, 1, COLOR_TEXTO), (190, 570))

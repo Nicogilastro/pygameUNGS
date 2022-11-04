@@ -84,8 +84,7 @@ def main():
                 if e.key == K_RETURN:
                     #falta hacer un control para que sea una palabra de la longitud deseada
                     #falta controlar que la palabra este en el diccionario
-                    gano = revision(palabraCorrecta, palabraUsuario,
-                                    correctas, incorrectas, casi)
+                    gano = revision(palabraCorrecta, palabraUsuario, correctas, incorrectas, casi)
                     ListaDePalabrasUsuario.append(palabraUsuario)
                     palabraUsuario = ""
                     intentos -= 1

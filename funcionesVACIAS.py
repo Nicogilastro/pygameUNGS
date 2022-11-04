@@ -8,8 +8,7 @@ import time
 
 def nuevaPalabra(lista):
     largoLista = len(lista)
-    numeroRandom = random.randint(0, largoLista)
-    # print(lista[numeroRandom])
+    numeroRandom = random.randint(0, largoLista - 1)
     return lista[numeroRandom]
 
 # lee el archivo, y elije las letras que sean del largo especificado
@@ -18,6 +17,7 @@ def lectura(archivo, salida, largo):
     for palabra in archivo :
         if len(palabra) == largo:
             salida.append(palabra[:-1])
+    
 
 # largo de la palabra usuario
 
@@ -26,7 +26,7 @@ def largoPalabra():
     screen = pygame.display.set_mode((ANCHO, ALTO))
     text = defaultFont.render("La palabra no puede tener mas de " + str(LARGO-1) + ' caracteres.', True, COLOR_AZUL)
     text_rect = text.get_rect()
-    text_x = screen.get_width() / 2 - text_rect.width / 2
+    text_x = screen.get_width() /    - text_rect.width / 2
     text_y = screen.get_height() / 2 - text_rect.height / 2
     screen.blit(text, [text_x, text_y])
 
@@ -36,13 +36,13 @@ def revision(palabraCorrecta, palabra, correctas, incorrectas, casi):
     if len(palabra) > len(palabraCorrecta):
         palabra = ''
     for i in range(len(palabra)):
-        if palabra[i] == palabraCorrecta[i] and palabra[i] not in correctas:
+        if palabra[i].lower() == palabraCorrecta[i].lower() and palabra[i].lower() not in correctas:
             correctas.append(palabra[i])
             ding()
-        elif palabra[i] in palabraCorrecta and palabra[i] not in casi and palabra[i] not in correctas:
+        elif palabra[i].lower() in palabraCorrecta and palabra[i].lower() not in casi and palabra[i].lower() not in correctas:
             casi.append(palabra[i])
             dung()
-        elif palabra[i] not in palabraCorrecta and palabra[i] not in incorrectas:
+        elif palabra[i].lower() not in palabraCorrecta and palabra[i].lower() not in incorrectas:
             incorrectas.append(palabra[i])
             dong()
     if palabra == palabraCorrecta:
