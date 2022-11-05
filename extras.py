@@ -34,7 +34,7 @@ def dameLetraApretada(key):
         return ("m")
     elif key == K_n:
         return ("n")
-    elif key == 59:
+    elif key == 59 or key == 241:
         return ("ñ")
     elif key == K_o:
         return ("o")
@@ -76,6 +76,24 @@ def dibujar(screen, listaDePalabrasUsuario, palabraUsuario, puntos, segundos, ga
     defaultFontGrande = pygame.font.Font(
         pygame.font.get_default_font(), TAMANNO_LETRA_GRANDE)
 
+    # color de las letras despues de intetar
+    def colorIntentos(lista):
+        pos = 0
+        for palabra in lista:
+            posX = 0
+            for i in range(len(palabra)):
+                if palabra[i] == palabraCorrecta[i]:
+                    color = COLOR_LETRAS                
+                    screen.blit(defaultFontGrande.render(palabra[i], 1, color),((ANCHO//2-len(palabra)*TAMANNO_LETRA_GRANDE//4) + posX, 30 + 80 * pos))
+                elif palabra[i] in palabraCorrecta:
+                    color = COLOR_AZUL
+                    screen.blit(defaultFontGrande.render(palabra[i], 1, color),((ANCHO//2-len(palabra)*TAMANNO_LETRA_GRANDE//4) + posX, 30 + 80 * pos))
+                elif palabra[i] in incorrectas:
+                    color = COLOR_RED
+                    screen.blit(defaultFontGrande.render(palabra[i], 1, color),((ANCHO//2-len(palabra)*TAMANNO_LETRA_GRANDE//4) + posX, 30 + 80 * pos))
+                posX += TAMANNO_LETRA_GRANDE
+            pos += 1
+
     # botones para la pantalla de reinicio
 
     def botones():
@@ -85,26 +103,15 @@ def dibujar(screen, listaDePalabrasUsuario, palabraUsuario, puntos, segundos, ga
         text2 = defaultFont.render('Salir' , True , COLOR_BLANCO)
         screen.blit(text , (405 , 405))
         screen.blit(text2 , (285 , 405))
-        # get all events
-        ev = pygame.event.get()
 
-        # proceed events
-        for event in ev:
-            # handle MOUSEBUTTONUP
-            if event.type == pygame.MOUSEBUTTONUP:
-                mouse = pygame.mouse.get_pos()
-
-            # get a list of all sprites that are under the mouse cursor
-            # clicked_sprites = [s for s in sprites if s.rect.collidepoint(pos)]
-            # do something with the clicked sprites...
     # end screen when win
 
     def ganaste():
         screen = pygame.display.set_mode((ANCHO, ALTO))
-        pygame.mixer.music.stop()
-        mta = pygame.mixer.Sound('./sonidos/mta.mp3')
-        mta.set_volume(1)
-        mta.play(-1)
+        # pygame.mixer.music.stop()
+        # mta = pygame.mixer.Sound('./sonidos/mta.mp3')
+        # mta.set_volume(1)
+        # mta.play(-1)
         text = defaultFont.render("Ganaste!, la palabra correcta era: " + palabraCorrecta, True, COLOR_VERDE)
         text_rect = text.get_rect()
         text_x = screen.get_width() / 2 - text_rect.width / 2
@@ -116,10 +123,10 @@ def dibujar(screen, listaDePalabrasUsuario, palabraUsuario, puntos, segundos, ga
 
     def perdiste():
         screen = pygame.display.set_mode((ANCHO, ALTO))
-        pygame.mixer.music.stop()
-        loss = pygame.mixer.Sound('./sonidos/loss.mp3')
-        loss.set_volume(1)
-        loss.play()
+        # pygame.mixer.music.stop()
+        # loss = pygame.mixer.Sound('./sonidos/loss.mp3')
+        # loss.set_volume(1)
+        # loss.play()
         text = defaultFont.render("Perdiste, la palabra correcta era: " + palabraCorrecta, True, COLOR_RED)
         text_rect = text.get_rect()
         text_x = screen.get_width() / 2 - text_rect.width / 2
@@ -148,10 +155,8 @@ def dibujar(screen, listaDePalabrasUsuario, palabraUsuario, puntos, segundos, ga
         screen.blit(ren, (10, 10))
 
     #muestra las palabras anteriores, las que se fueron arriesgando
-    pos = 0
-    for palabra in listaDePalabrasUsuario:
-        screen.blit(defaultFontGrande.render(palabra, 1, COLOR_LETRAS),(ANCHO//2-len(palabra)*TAMANNO_LETRA_GRANDE//4, 30 + 80 * pos))
-        pos += 1
+
+    colorIntentos(listaDePalabrasUsuario)
 
     #muestra el abcdario, falta ponerle color a las letras
     abcdario = ["qwertyuiop", "asdfghjklñ", "zxcvbnm"]
@@ -182,4 +187,3 @@ def dibujar(screen, listaDePalabrasUsuario, palabraUsuario, puntos, segundos, ga
             perdiste()
         if segundos < 1:
             perdiste()
-

@@ -39,7 +39,7 @@ def main():
     casi = []
     gano = False
 
-    archivo = open("./lemario.txt", "r")
+    archivo = open("./1.txt", "r")
 
     #lectura del diccionario
 
@@ -50,9 +50,9 @@ def main():
 
     # musica de fondo
 
-    music = pygame.mixer.music.load('./sonidos/gta.mp3')
-    pygame.mixer.music.set_volume(0.02)
-    pygame.mixer.music.play(-1)
+    # music = pygame.mixer.music.load('./sonidos/gta.mp3')
+    # pygame.mixer.music.set_volume(0.02)
+    # pygame.mixer.music.play(-1)
     intentos = 5
 
     dibujar(screen, ListaDePalabrasUsuario, palabraUsuario, puntos, segundos, gano, correctas, incorrectas, casi, intentos, palabraCorrecta)
@@ -85,7 +85,10 @@ def main():
                     #falta hacer un control para que sea una palabra de la longitud deseada
                     #falta controlar que la palabra este en el diccionario
                     gano = revision(palabraCorrecta, palabraUsuario, correctas, incorrectas, casi)
-                    ListaDePalabrasUsuario.append(palabraUsuario)
+                    if palabraUsuario not in ListaDePalabrasUsuario:
+                        ListaDePalabrasUsuario.append(palabraUsuario)
+                    else:
+                        intentos += 1
                     palabraUsuario = ""
                     intentos -= 1
 

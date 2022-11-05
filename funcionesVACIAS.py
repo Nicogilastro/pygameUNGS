@@ -17,6 +17,7 @@ def lectura(archivo, salida, largo):
     for palabra in archivo :
         if len(palabra) == largo:
             salida.append(palabra[:-1])
+    print(salida)
     
 
 # largo de la palabra usuario
@@ -38,13 +39,14 @@ def revision(palabraCorrecta, palabra, correctas, incorrectas, casi):
     for i in range(len(palabra)):
         if palabra[i].lower() == palabraCorrecta[i].lower() and palabra[i].lower() not in correctas:
             correctas.append(palabra[i])
-            ding()
+            # ding()
         elif palabra[i].lower() in palabraCorrecta and palabra[i].lower() not in casi and palabra[i].lower() not in correctas:
             casi.append(palabra[i])
-            dung()
+            # dung()
         elif palabra[i].lower() not in palabraCorrecta and palabra[i].lower() not in incorrectas:
             incorrectas.append(palabra[i])
-            dong()
+            # dong()
+    
     if palabra == palabraCorrecta:
         return True
 
@@ -66,20 +68,20 @@ def letraEnCasi(letra, casi):
 
 # sonidos
 
-def ding():
-    ding = pygame.mixer.Sound('./sonidos/ding.mp3')
-    ding.set_volume(0.6)    
-    ding.play(0)
+# def ding():
+#     ding = pygame.mixer.Sound('./sonidos/ding.mp3')
+#     ding.set_volume(0.6)    
+#     ding.play(0)
 
-def dong():
-    dong = pygame.mixer.Sound('./sonidos/dong.mp3')
-    dong.set_volume(0.6)    
-    dong.play(0)
+# def dong():
+#     dong = pygame.mixer.Sound('./sonidos/dong.mp3')
+#     dong.set_volume(0.6)    
+#     dong.play(0)
 
-def dung():
-    dung = pygame.mixer.Sound('./sonidos/dung.mp3')
-    dung.set_volume(0.6)    
-    dung.play(0)
+# def dung():
+#     dung = pygame.mixer.Sound('./sonidos/dung.mp3')
+#     dung.set_volume(0.6)    
+#     dung.play(0)
 
 # setea el juego para jugar por tiempo
 
