@@ -17,19 +17,6 @@ def lectura(archivo, salida, largo):
     for palabra in archivo :
         if len(palabra) == largo:
             salida.append(palabra[:-1])
-    print(salida)
-    
-
-# largo de la palabra usuario
-
-def largoPalabra():
-    defaultFont = pygame.font.Font(pygame.font.get_default_font(), TAMANNO_LETRA)
-    screen = pygame.display.set_mode((ANCHO, ALTO))
-    text = defaultFont.render("La palabra no puede tener mas de " + str(LARGO-1) + ' caracteres.', True, COLOR_AZUL)
-    text_rect = text.get_rect()
-    text_x = screen.get_width() /    - text_rect.width / 2
-    text_y = screen.get_height() / 2 - text_rect.height / 2
-    screen.blit(text, [text_x, text_y])
 
 # chequea si la palabra ingresada por el usuario es correcta o no lo es, y las carga respectivamente a sus listas
 
@@ -39,13 +26,13 @@ def revision(palabraCorrecta, palabra, correctas, incorrectas, casi):
     for i in range(len(palabra)):
         if palabra[i].lower() == palabraCorrecta[i].lower() and palabra[i].lower() not in correctas:
             correctas.append(palabra[i])
-            # ding()
+            ding()
         elif palabra[i].lower() in palabraCorrecta and palabra[i].lower() not in casi and palabra[i].lower() not in correctas:
             casi.append(palabra[i])
-            # dung()
+            dung()
         elif palabra[i].lower() not in palabraCorrecta and palabra[i].lower() not in incorrectas:
             incorrectas.append(palabra[i])
-            # dong()
+            dong()
     
     if palabra == palabraCorrecta:
         return True
@@ -68,30 +55,36 @@ def letraEnCasi(letra, casi):
 
 # sonidos
 
-# def ding():
-#     ding = pygame.mixer.Sound('./sonidos/ding.mp3')
-#     ding.set_volume(0.6)    
-#     ding.play(0)
+def ding():
+    ding = pygame.mixer.Sound('./sonidos/ding.mp3')
+    ding.set_volume(0.6)    
+    ding.play(0)
 
-# def dong():
-#     dong = pygame.mixer.Sound('./sonidos/dong.mp3')
-#     dong.set_volume(0.6)    
-#     dong.play(0)
+def dong():
+    dong = pygame.mixer.Sound('./sonidos/dong.mp3')
+    dong.set_volume(0.6)    
+    dong.play(0)
 
-# def dung():
-#     dung = pygame.mixer.Sound('./sonidos/dung.mp3')
-#     dung.set_volume(0.6)    
-#     dung.play(0)
+def dung():
+    dung = pygame.mixer.Sound('./sonidos/dung.mp3')
+    dung.set_volume(0.6)    
+    dung.play(0)
+
+# muestra un mensaje para indicar que la palabra esta repetida
+
+def palabraRepetida():
+    pass
+
 
 # setea el juego para jugar por tiempo
 
 def porTiempo():
-    return
+    pass
 
 # Muestra los primeros 10 mejores puntajes
 
 def records(nombre, cantAcertadas):
-    return
+    pass
 
 
 

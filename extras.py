@@ -69,12 +69,11 @@ def dameLetraApretada(key):
     else:
         return ("")
 
-def dibujar(screen, listaDePalabrasUsuario, palabraUsuario, puntos, segundos, gano,
+def dibujar(screen, listaDePalabrasUsuario, listaDiccionario, palabraUsuario, puntos, segundos, gano,
             correctas, incorrectas, casi, intentos, palabraCorrecta):
-    defaultFont = pygame.font.Font(
-        pygame.font.get_default_font(), TAMANNO_LETRA)
-    defaultFontGrande = pygame.font.Font(
-        pygame.font.get_default_font(), TAMANNO_LETRA_GRANDE)
+    defaultFont = pygame.font.Font(pygame.font.get_default_font(), TAMANNO_LETRA)
+    
+    defaultFontGrande = pygame.font.Font(pygame.font.get_default_font(), TAMANNO_LETRA_GRANDE)
 
     # color de las letras despues de intetar
     def colorIntentos(lista):
@@ -84,13 +83,13 @@ def dibujar(screen, listaDePalabrasUsuario, palabraUsuario, puntos, segundos, ga
             for i in range(len(palabra)):
                 if palabra[i] == palabraCorrecta[i]:
                     color = COLOR_LETRAS                
-                    screen.blit(defaultFontGrande.render(palabra[i], 1, color),((ANCHO//2-len(palabra)*TAMANNO_LETRA_GRANDE//4) + posX, 30 + 80 * pos))
+                    screen.blit(defaultFontGrande.render(palabra[i], 1, color),((ANCHO//2-len(palabra)*TAMANNO_LETRA_GRANDE//2) + posX, 30 + 80 * pos))
                 elif palabra[i] in palabraCorrecta:
                     color = COLOR_AZUL
-                    screen.blit(defaultFontGrande.render(palabra[i], 1, color),((ANCHO//2-len(palabra)*TAMANNO_LETRA_GRANDE//4) + posX, 30 + 80 * pos))
+                    screen.blit(defaultFontGrande.render(palabra[i], 1, color),((ANCHO//2-len(palabra)*TAMANNO_LETRA_GRANDE//2) + posX, 30 + 80 * pos))
                 elif palabra[i] in incorrectas:
                     color = COLOR_RED
-                    screen.blit(defaultFontGrande.render(palabra[i], 1, color),((ANCHO//2-len(palabra)*TAMANNO_LETRA_GRANDE//4) + posX, 30 + 80 * pos))
+                    screen.blit(defaultFontGrande.render(palabra[i], 1, color),((ANCHO//2-len(palabra)*TAMANNO_LETRA_GRANDE//2) + posX, 30 + 80 * pos))
                 posX += TAMANNO_LETRA_GRANDE
             pos += 1
 
@@ -108,10 +107,10 @@ def dibujar(screen, listaDePalabrasUsuario, palabraUsuario, puntos, segundos, ga
 
     def ganaste():
         screen = pygame.display.set_mode((ANCHO, ALTO))
-        # pygame.mixer.music.stop()
-        # mta = pygame.mixer.Sound('./sonidos/mta.mp3')
-        # mta.set_volume(1)
-        # mta.play(-1)
+        pygame.mixer.music.stop()
+        mta = pygame.mixer.Sound('./sonidos/mta.mp3')
+        mta.set_volume(1)
+        mta.play(-1)
         text = defaultFont.render("Ganaste!, la palabra correcta era: " + palabraCorrecta, True, COLOR_VERDE)
         text_rect = text.get_rect()
         text_x = screen.get_width() / 2 - text_rect.width / 2
@@ -123,10 +122,10 @@ def dibujar(screen, listaDePalabrasUsuario, palabraUsuario, puntos, segundos, ga
 
     def perdiste():
         screen = pygame.display.set_mode((ANCHO, ALTO))
-        # pygame.mixer.music.stop()
-        # loss = pygame.mixer.Sound('./sonidos/loss.mp3')
-        # loss.set_volume(1)
-        # loss.play()
+        pygame.mixer.music.stop()
+        loss = pygame.mixer.Sound('./sonidos/loss.mp3')
+        loss.set_volume(1)
+        loss.play()
         text = defaultFont.render("Perdiste, la palabra correcta era: " + palabraCorrecta, True, COLOR_RED)
         text_rect = text.get_rect()
         text_x = screen.get_width() / 2 - text_rect.width / 2
@@ -138,7 +137,12 @@ def dibujar(screen, listaDePalabrasUsuario, palabraUsuario, puntos, segundos, ga
     pygame.draw.line(screen, (255, 255, 255), (0, ALTO-70), (ANCHO, ALTO-70), 5)
 
     #muestra lo que escribe el jugador
-    screen.blit(defaultFont.render(palabraUsuario, 1, COLOR_TEXTO), (190, 570))
+    if len(palabraUsuario) != LARGO - 1 :
+        screen.blit(defaultFont.render(palabraUsuario, 1, COLOR_RED), (190, 570))
+        # muestra un mensaje para indicar que la palabra no tiene el largo correcto
+        screen.blit(defaultFont.render("La palabra debe tener " + str(LARGO-1) + ' caracteres.', 1, COLOR_RED), (400, 570))
+    else:
+        screen.blit(defaultFont.render(palabraUsuario, 1, COLOR_VERDE), (190, 570))
     #muestra el puntaje
     screen.blit(defaultFont.render("Puntos: " + str(puntos), 1, COLOR_TEXTO), (680, 10))
     #muestra el largo de la palabra
@@ -158,6 +162,16 @@ def dibujar(screen, listaDePalabrasUsuario, palabraUsuario, puntos, segundos, ga
 
     colorIntentos(listaDePalabrasUsuario)
 
+    # muestra un mensaje para indicar que la palabra no se puede repetir
+
+    for palabra in listaDePalabrasUsuario:
+        if palabraUsuario == palabra:
+            screen.blit(defaultFont.render("La palabra no se puede repetir.", 1, COLOR_RED), (400, 550))
+
+    # muestra un mensaje para indicar que la palabra debe estar en el diccionario
+
+    if palabraUsuario not in listaDiccionario:
+        screen.blit(defaultFont.render("La palabra debe estar en el diccionario.", 1, COLOR_RED), (400, 550))
     #muestra el abcdario, falta ponerle color a las letras
     abcdario = ["qwertyuiop", "asdfghjklñ", "zxcvbnm"]
     y = 0

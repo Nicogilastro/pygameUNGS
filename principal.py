@@ -39,7 +39,7 @@ def main():
     casi = []
     gano = False
 
-    archivo = open("./1.txt", "r")
+    archivo = open("./lemario.txt", "r")
 
     #lectura del diccionario
 
@@ -50,12 +50,12 @@ def main():
 
     # musica de fondo
 
-    # music = pygame.mixer.music.load('./sonidos/gta.mp3')
-    # pygame.mixer.music.set_volume(0.02)
-    # pygame.mixer.music.play(-1)
+    music = pygame.mixer.music.load('./sonidos/gta.mp3')
+    pygame.mixer.music.set_volume(0.02)
+    pygame.mixer.music.play(-1)
     intentos = 5
 
-    dibujar(screen, ListaDePalabrasUsuario, palabraUsuario, puntos, segundos, gano, correctas, incorrectas, casi, intentos, palabraCorrecta)
+    dibujar(screen, ListaDePalabrasUsuario, listaPalabrasDiccionario, palabraUsuario, puntos, segundos, gano, correctas, incorrectas, casi, intentos, palabraCorrecta)
 
     print(palabraCorrecta)
 
@@ -82,23 +82,25 @@ def main():
                 if e.key == K_BACKSPACE:
                     palabraUsuario = palabraUsuario[0:len(palabraUsuario)-1]
                 if e.key == K_RETURN:
-                    #falta hacer un control para que sea una palabra de la longitud deseada
-                    #falta controlar que la palabra este en el diccionario
-                    gano = revision(palabraCorrecta, palabraUsuario, correctas, incorrectas, casi)
-                    if palabraUsuario not in ListaDePalabrasUsuario:
-                        ListaDePalabrasUsuario.append(palabraUsuario)
-                    else:
-                        intentos += 1
-                    palabraUsuario = ""
-                    intentos -= 1
-
+                    if len(palabraUsuario) == (LARGO - 1) and palabraUsuario not in ListaDePalabrasUsuario:
+                        #falta hacer un control para que sea una palabra de la longitud deseada
+                        #falta controlar que la palabra este en el diccionario
+                        if palabraUsuario in listaPalabrasDiccionario:
+                            gano = revision(palabraCorrecta, palabraUsuario, correctas, incorrectas, casi)
+                            if palabraUsuario not in ListaDePalabrasUsuario:
+                                ListaDePalabrasUsuario.append(palabraUsuario)
+                        else:
+                            intentos += 1
+                        palabraUsuario = ""
+                        intentos -= 1
+                
         segundos = TIEMPO_MAX - pygame.time.get_ticks()/1000
 
         #Limpiar pantalla anterior
         screen.fill(COLOR_FONDO)
 
         #Dibujar de nuevo todo
-        dibujar(screen, ListaDePalabrasUsuario, palabraUsuario, puntos, segundos, gano, correctas, incorrectas, casi, intentos, palabraCorrecta)
+        dibujar(screen, ListaDePalabrasUsuario, listaPalabrasDiccionario, palabraUsuario, puntos, segundos, gano, correctas, incorrectas, casi, intentos, palabraCorrecta)
 
         pygame.display.flip()
 
