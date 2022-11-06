@@ -51,13 +51,13 @@ def main():
     # musica de fondo
 
     music = pygame.mixer.music.load('./sonidos/gta.mp3')
-    pygame.mixer.music.set_volume(0.02)
+    pygame.mixer.music.set_volume(0.0)
     pygame.mixer.music.play(-1)
     intentos = 5
 
     dibujar(screen, ListaDePalabrasUsuario, listaPalabrasDiccionario, palabraUsuario, puntos, segundos, gano, correctas, incorrectas, casi, intentos, palabraCorrecta)
 
-    print(palabraCorrecta)
+    print(palabraCorrecta)  
 
     while segundos > fps/1000 and intentos > 0 and not gano:
         # 1 frame cada 1/fps segundos
@@ -93,7 +93,7 @@ def main():
                             intentos += 1
                         palabraUsuario = ""
                         intentos -= 1
-                
+                    
         segundos = TIEMPO_MAX - pygame.time.get_ticks()/1000
 
         #Limpiar pantalla anterior

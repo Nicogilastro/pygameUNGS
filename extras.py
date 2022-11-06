@@ -199,5 +199,5 @@ def dibujar(screen, listaDePalabrasUsuario, listaDiccionario, palabraUsuario, pu
     else:
         if intentos == 0 and palabraUsuario != palabraCorrecta:
             perdiste()
-        if segundos < 1:
+        if segundos < 0.01:
             perdiste()

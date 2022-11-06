@@ -36,6 +36,8 @@ def revision(palabraCorrecta, palabra, correctas, incorrectas, casi):
     
     if palabra == palabraCorrecta:
         return True
+    else:
+        return False
 
 # chequea la longitud de la palabra ingresada si es igual al de la palabra oculta
 
@@ -70,21 +72,15 @@ def dung():
     dung.set_volume(0.6)    
     dung.play(0)
 
-# muestra un mensaje para indicar que la palabra esta repetida
-
-def palabraRepetida():
-    pass
-
-
 # setea el juego para jugar por tiempo
 
-def porTiempo():
-    pass
+# def porTiempo():
+#     pass
 
 # Muestra los primeros 10 mejores puntajes
 
-def records(nombre, cantAcertadas):
-    pass
+# def records(nombre, cantAcertadas):
+#     pass
 
 
 
