@@ -57,32 +57,26 @@ def letraEnCasi(letra, casi):
 
 # sonidos
 
+# sonido de acierto
+
 def ding():
     ding = pygame.mixer.Sound('./sonidos/ding.mp3')
     ding.set_volume(0.6)    
     ding.play(0)
+
+# sonido de acierto no certero
 
 def dong():
     dong = pygame.mixer.Sound('./sonidos/dong.mp3')
     dong.set_volume(0.6)    
     dong.play(0)
 
+# sonido de no acierto
+
 def dung():
     dung = pygame.mixer.Sound('./sonidos/dung.mp3')
     dung.set_volume(0.6)    
     dung.play(0)
-
-# setea el juego para jugar por tiempo
-
-# def porTiempo():
-#     pass
-
-# Muestra los primeros 10 mejores puntajes
-
-# def records(nombre, cantAcertadas):
-#     pass
-
-
 
 
 

@@ -76,6 +76,7 @@ def dibujar(screen, listaDePalabrasUsuario, listaDiccionario, palabraUsuario, pu
     defaultFontGrande = pygame.font.Font(pygame.font.get_default_font(), TAMANNO_LETRA_GRANDE)
 
     # color de las letras despues de intetar
+    
     def colorIntentos(lista):
         pos = 0
         for palabra in lista:
@@ -193,6 +194,8 @@ def dibujar(screen, listaDePalabrasUsuario, listaDiccionario, palabraUsuario, pu
 
             x += TAMANNO_LETRA
         y += TAMANNO_LETRA
+
+    # revision del estado del juego, gano o perdio
 
     if gano:
         ganaste()
