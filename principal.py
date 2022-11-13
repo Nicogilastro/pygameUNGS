@@ -57,8 +57,6 @@ def main():
 
     dibujar(screen, ListaDePalabrasUsuario, listaPalabrasDiccionario, palabraUsuario, puntos, segundos, gano, correctas, incorrectas, casi, intentos, palabraCorrecta)
 
-    print(palabraCorrecta)  
-
     while segundos > fps/1000 and intentos > 0 and not gano:
         # 1 frame cada 1/fps segundos
         gameClock.tick(fps)
@@ -83,17 +81,28 @@ def main():
                     palabraUsuario = palabraUsuario[0:len(palabraUsuario)-1]
                 if e.key == K_RETURN:
                     if len(palabraUsuario) == (LARGO - 1) and palabraUsuario not in ListaDePalabrasUsuario:
-                        #falta hacer un control para que sea una palabra de la longitud deseada
-                        #falta controlar que la palabra este en el diccionario
                         if palabraUsuario in listaPalabrasDiccionario:
                             gano = revision(palabraCorrecta, palabraUsuario, correctas, incorrectas, casi)
                             if palabraUsuario not in ListaDePalabrasUsuario:
                                 ListaDePalabrasUsuario.append(palabraUsuario)
+                            # if gano:
+                            #     palabraUsuario = ""
+                            #     puntos += 1
+                            #     palabraUsuario = ""
+                            #     ListaDePalabrasUsuario = []
+                            #     correctas = []
+                            #     incorrectas = []
+                            #     casi = []
+                            #     gano = False
+                            #     intentos = 6
+                            #     palabraCorrecta = nuevaPalabra(listaPalabrasDiccionario)
+                            #     dibujar(screen, ListaDePalabrasUsuario, listaPalabrasDiccionario, palabraUsuario, puntos, segundos, gano, correctas, incorrectas, casi, intentos, palabraCorrecta)
                         else:
                             intentos += 1
                         palabraUsuario = ""
                         intentos -= 1
-                    
+                
+                        
         segundos = TIEMPO_MAX - pygame.time.get_ticks()/1000
 
         #Limpiar pantalla anterior
@@ -104,12 +113,27 @@ def main():
 
         pygame.display.flip()
 
-    while 1:
-        #Esperar el QUIT del usuario
+    def botonApretado():
+        inputUsuario = ''
+        pygame.init()
         for e in pygame.event.get():
             if e.type == QUIT:
                 pygame.quit()
                 return
+            if e.type == KEYDOWN:
+                letra = dameLetraApretada(e.key)
+                inputUsuario += letra
+                if inputUsuario == "s":
+                    pygame.quit()
+                    return
+                elif inputUsuario == "j":
+                    main()
+            
+    while 1:
+        if gano:
+            botonApretado()
+        elif not gano:
+            botonApretado()
 
     archivo.close()
 

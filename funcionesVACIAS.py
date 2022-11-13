@@ -16,7 +16,7 @@ def nuevaPalabra(lista):
 def lectura(archivo, salida, largo):
     for palabra in archivo :
         if len(palabra) == largo:
-            salida.append(palabra[:-1])
+            salida.append(palabra[:-1].lower())
 
 # chequea si la palabra ingresada por el usuario es correcta o no lo es, y las carga respectivamente a sus listas
 
@@ -61,24 +61,20 @@ def letraEnCasi(letra, casi):
 
 def ding():
     ding = pygame.mixer.Sound('./sonidos/ding.mp3')
-    ding.set_volume(0.6)    
+    ding.set_volume(0)    
     ding.play(0)
 
 # sonido de acierto no certero
 
 def dong():
     dong = pygame.mixer.Sound('./sonidos/dong.mp3')
-    dong.set_volume(0.6)    
+    dong.set_volume(0)    
     dong.play(0)
 
 # sonido de no acierto
 
 def dung():
     dung = pygame.mixer.Sound('./sonidos/dung.mp3')
-    dung.set_volume(0.6)    
+    dung.set_volume(0)    
     dung.play(0)
-
-
-
-
 

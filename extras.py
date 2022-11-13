@@ -74,6 +74,8 @@ def dibujar(screen, listaDePalabrasUsuario, listaDiccionario, palabraUsuario, pu
     defaultFont = pygame.font.Font(pygame.font.get_default_font(), TAMANNO_LETRA)
     
     defaultFontGrande = pygame.font.Font(pygame.font.get_default_font(), TAMANNO_LETRA_GRANDE)
+    
+    print(palabraCorrecta)
 
     # color de las letras despues de intetar
     
@@ -97,10 +99,10 @@ def dibujar(screen, listaDePalabrasUsuario, listaDiccionario, palabraUsuario, pu
     # botones para la pantalla de reinicio
 
     def botones():
-        pygame.draw.rect(screen, COLOR_AZUL, [400, 400, 155 , 30])
-        pygame.draw.rect(screen, COLOR_AZUL, [280, 400, 60 , 30])
-        text = defaultFont.render('Jugar otra vez!' , True , COLOR_BLANCO)
-        text2 = defaultFont.render('Salir' , True , COLOR_BLANCO)
+        pygame.draw.rect(screen, COLOR_AZUL, [400, 400, 180 , 30])
+        pygame.draw.rect(screen, COLOR_AZUL, [280, 400, 85 , 30])
+        text = defaultFont.render('Jugar otra vez! (j)' , True , COLOR_BLANCO)
+        text2 = defaultFont.render('Salir (s)' , True , COLOR_BLANCO)
         screen.blit(text , (405 , 405))
         screen.blit(text2 , (285 , 405))
 
@@ -110,7 +112,7 @@ def dibujar(screen, listaDePalabrasUsuario, listaDiccionario, palabraUsuario, pu
         screen = pygame.display.set_mode((ANCHO, ALTO))
         pygame.mixer.music.stop()
         mta = pygame.mixer.Sound('./sonidos/mta.mp3')
-        mta.set_volume(1)
+        mta.set_volume(0)
         mta.play(-1)
         text = defaultFont.render("Ganaste!, la palabra correcta era: " + palabraCorrecta, True, COLOR_VERDE)
         text_rect = text.get_rect()
@@ -125,7 +127,7 @@ def dibujar(screen, listaDePalabrasUsuario, listaDiccionario, palabraUsuario, pu
         screen = pygame.display.set_mode((ANCHO, ALTO))
         pygame.mixer.music.stop()
         loss = pygame.mixer.Sound('./sonidos/loss.mp3')
-        loss.set_volume(1)
+        loss.set_volume(0)
         loss.play()
         text = defaultFont.render("Perdiste, la palabra correcta era: " + palabraCorrecta, True, COLOR_RED)
         text_rect = text.get_rect()
@@ -145,11 +147,17 @@ def dibujar(screen, listaDePalabrasUsuario, listaDiccionario, palabraUsuario, pu
     else:
         screen.blit(defaultFont.render(palabraUsuario, 1, COLOR_VERDE), (190, 570))
     #muestra el puntaje
+
     screen.blit(defaultFont.render("Puntos: " + str(puntos), 1, COLOR_TEXTO), (680, 10))
-    #muestra el largo de la palabra
-    screen.blit(defaultFont.render("Largo de la Palabra: " + str(LARGO - 1), 1, COLOR_TEXTO), (300, 10))
+
     #muestra los intentos
+
     screen.blit(defaultFont.render("Intentos: " + str(intentos), 1, COLOR_TEXTO), (680, 30))
+
+    #muestra el largo de la palabra
+
+    screen.blit(defaultFont.render("Largo de la Palabra: " + str(LARGO - 1), 1, COLOR_TEXTO), (300, 10))
+
     #muestra los segundos y puede cambiar de color con el tiempo
 
     if segundos < 15 :
