@@ -55,7 +55,7 @@ def main():
     pygame.mixer.music.play(-1)
     intentos = 5
 
-    dibujar(screen, ListaDePalabrasUsuario, listaPalabrasDiccionario, palabraUsuario, puntos, segundos, gano, correctas, incorrectas, casi, intentos, palabraCorrecta)
+    dibujar(screen, ListaDePalabrasUsuario, listaPalabrasDiccionario, palabraUsuario, puntos, segundos, correctas, incorrectas, casi, intentos, palabraCorrecta)
 
     while segundos > fps/1000 and intentos > 0 and not gano:
         # 1 frame cada 1/fps segundos
@@ -85,31 +85,28 @@ def main():
                             gano = revision(palabraCorrecta, palabraUsuario, correctas, incorrectas, casi)
                             if palabraUsuario not in ListaDePalabrasUsuario:
                                 ListaDePalabrasUsuario.append(palabraUsuario)
-                            # if gano:
-                            #     palabraUsuario = ""
-                            #     puntos += 1
-                            #     palabraUsuario = ""
-                            #     ListaDePalabrasUsuario = []
-                            #     correctas = []
-                            #     incorrectas = []
-                            #     casi = []
-                            #     gano = False
-                            #     intentos = 6
-                            #     palabraCorrecta = nuevaPalabra(listaPalabrasDiccionario)
-                            #     dibujar(screen, ListaDePalabrasUsuario, listaPalabrasDiccionario, palabraUsuario, puntos, segundos, gano, correctas, incorrectas, casi, intentos, palabraCorrecta)
+                            if gano:
+                                puntos += 1
+                                palabraUsuario = ""
+                                ListaDePalabrasUsuario = []
+                                correctas = []
+                                incorrectas = []
+                                casi = []
+                                gano = False
+                                intentos = 5
+                                palabraCorrecta = nuevaPalabra(listaPalabrasDiccionario)
+                                dibujar(screen, ListaDePalabrasUsuario, listaPalabrasDiccionario, palabraUsuario, puntos, segundos, correctas, incorrectas, casi, intentos, palabraCorrecta)
+                            palabraUsuario = ''
                         else:
-                            intentos += 1
-                        palabraUsuario = ""
-                        intentos -= 1
-                
-                        
+                            intentos -= 1
+
         segundos = TIEMPO_MAX - pygame.time.get_ticks()/1000
 
         #Limpiar pantalla anterior
         screen.fill(COLOR_FONDO)
 
         #Dibujar de nuevo todo
-        dibujar(screen, ListaDePalabrasUsuario, listaPalabrasDiccionario, palabraUsuario, puntos, segundos, gano, correctas, incorrectas, casi, intentos, palabraCorrecta)
+        dibujar(screen, ListaDePalabrasUsuario, listaPalabrasDiccionario, palabraUsuario, puntos, segundos, correctas, incorrectas, casi, intentos, palabraCorrecta)
 
         pygame.display.flip()
 
@@ -118,22 +115,23 @@ def main():
         pygame.init()
         for e in pygame.event.get():
             if e.type == QUIT:
+                pygame.display.quit()
                 pygame.quit()
-                return
+                return ()
             if e.type == KEYDOWN:
                 letra = dameLetraApretada(e.key)
                 inputUsuario += letra
                 if inputUsuario == "s":
+                    pygame.display.quit()
                     pygame.quit()
-                    return
+                    exit()
                 elif inputUsuario == "j":
                     main()
             
     while 1:
-        if gano:
+        if segundos < 0.01:
             botonApretado()
-        elif not gano:
-            botonApretado()
+
 
     archivo.close()
 

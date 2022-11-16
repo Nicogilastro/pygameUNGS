@@ -69,14 +69,11 @@ def dameLetraApretada(key):
     else:
         return ("")
 
-def dibujar(screen, listaDePalabrasUsuario, listaDiccionario, palabraUsuario, puntos, segundos, gano,
-            correctas, incorrectas, casi, intentos, palabraCorrecta):
+def dibujar(screen, listaDePalabrasUsuario, listaDiccionario, palabraUsuario, puntos, segundos, correctas, incorrectas, casi, intentos, palabraCorrecta):
     defaultFont = pygame.font.Font(pygame.font.get_default_font(), TAMANNO_LETRA)
     
     defaultFontGrande = pygame.font.Font(pygame.font.get_default_font(), TAMANNO_LETRA_GRANDE)
     
-    print(palabraCorrecta)
-
     # color de las letras despues de intetar
     
     def colorIntentos(lista):
@@ -108,13 +105,13 @@ def dibujar(screen, listaDePalabrasUsuario, listaDiccionario, palabraUsuario, pu
 
     # end screen when win
 
-    def ganaste():
+    def endscreen():
         screen = pygame.display.set_mode((ANCHO, ALTO))
         pygame.mixer.music.stop()
         mta = pygame.mixer.Sound('./sonidos/mta.mp3')
         mta.set_volume(0)
         mta.play(-1)
-        text = defaultFont.render("Ganaste!, la palabra correcta era: " + palabraCorrecta, True, COLOR_VERDE)
+        text = defaultFont.render("Felicitaciones, tu puntaje es de " + str(puntos) + "!, La última palabra correcta era: " + palabraCorrecta, True, COLOR_VERDE)
         text_rect = text.get_rect()
         text_x = screen.get_width() / 2 - text_rect.width / 2
         text_y = screen.get_height() / 2 - text_rect.height / 2
@@ -129,7 +126,7 @@ def dibujar(screen, listaDePalabrasUsuario, listaDiccionario, palabraUsuario, pu
         loss = pygame.mixer.Sound('./sonidos/loss.mp3')
         loss.set_volume(0)
         loss.play()
-        text = defaultFont.render("Perdiste, la palabra correcta era: " + palabraCorrecta, True, COLOR_RED)
+        text = defaultFont.render("Perdiste, tu puntaje es de " + str(puntos) + "!, La palabra correcta era: " + palabraCorrecta, True, COLOR_RED)
         text_rect = text.get_rect()
         text_x = screen.get_width() / 2 - text_rect.width / 2
         text_y = screen.get_height() / 2 - text_rect.height / 2
@@ -150,9 +147,13 @@ def dibujar(screen, listaDePalabrasUsuario, listaDiccionario, palabraUsuario, pu
 
     screen.blit(defaultFont.render("Puntos: " + str(puntos), 1, COLOR_TEXTO), (680, 10))
 
+    #muestra puntaje mas alto obtenido
+
+    screen.blit(defaultFont.render("Record: " + str(RECORD), 1, COLOR_TEXTO), (680, 30))    
+
     #muestra los intentos
 
-    screen.blit(defaultFont.render("Intentos: " + str(intentos), 1, COLOR_TEXTO), (680, 30))
+    screen.blit(defaultFont.render("Intentos: " + str(intentos), 1, COLOR_TEXTO), (680, 50))
 
     #muestra el largo de la palabra
 
@@ -205,10 +206,31 @@ def dibujar(screen, listaDePalabrasUsuario, listaDiccionario, palabraUsuario, pu
 
     # revision del estado del juego, gano o perdio
 
-    if gano:
-        ganaste()
-    else:
-        if intentos == 0 and palabraUsuario != palabraCorrecta:
+    if segundos < 0.01:
+        archivoPuntos=open("highscore.txt","r")
+        record = archivoPuntos.readline()
+
+        recordArchivo= int(record)
+
+        archivoPuntos.close()
+        archivoPuntos = open("highscore.txt", 'w')
+
+        if puntos>recordArchivo:
+            archivoPuntos.write(str(puntos))
+            recordArchivo=puntos
+            archivoPuntos.close()
+
+        elif puntos < recordArchivo:
+            archivoPuntos.write(RECORD)
+            archivoPuntos.close()
+
+        else:
+            archivoPuntos.write(str(puntos))
+
+        if puntos == 0:
             perdiste()
-        if segundos < 0.01:
-            perdiste()
+        else:
+            endscreen()
+        archivoPuntos.close()
+    
+   
