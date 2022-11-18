@@ -18,7 +18,7 @@ COLOR_VERDE = (0, 255, 0)
 COLOR_AZUL = (0, 0, 255)
 COLOR_BLANCO = (255, 255, 255)
 
-archivoPuntos=open("highscore.txt","r")
+archivoPuntos = open("highscore.txt","r")
 RECORD = archivoPuntos.readline()
 archivoPuntos.close()
 

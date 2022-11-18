@@ -69,11 +69,20 @@ def dameLetraApretada(key):
     else:
         return ("")
 
-def dibujar(screen, listaDePalabrasUsuario, listaDiccionario, palabraUsuario, puntos, segundos, correctas, incorrectas, casi, intentos, palabraCorrecta):
+def dibujar(screen, listaDePalabrasUsuario, listaDiccionario, palabraUsuario, puntos, segundos, correctas, incorrectas, casi, intentos, palabraCorrecta, correctaAnterior):
     defaultFont = pygame.font.Font(pygame.font.get_default_font(), TAMANNO_LETRA)
     
     defaultFontGrande = pygame.font.Font(pygame.font.get_default_font(), TAMANNO_LETRA_GRANDE)
-    
+
+    print(palabraCorrecta)
+
+    screen = pygame.display.set_mode((ANCHO, ALTO))
+    defaultFont = pygame.font.Font(pygame.font.get_default_font(), TAMANNO_LETRA)
+    text = defaultFont.render("La última palabra correcta era: " + correctaAnterior, True, COLOR_VERDE)
+    text_x = 400
+    text_y = 500
+    screen.blit(text, [text_x, text_y])
+
     # color de las letras despues de intetar
     
     def colorIntentos(lista):
@@ -105,11 +114,11 @@ def dibujar(screen, listaDePalabrasUsuario, listaDiccionario, palabraUsuario, pu
 
     # end screen when win
 
-    def endscreen():
+    def ganaste():
         screen = pygame.display.set_mode((ANCHO, ALTO))
         pygame.mixer.music.stop()
         mta = pygame.mixer.Sound('./sonidos/mta.mp3')
-        mta.set_volume(0)
+        mta.set_volume(1)
         mta.play(-1)
         text = defaultFont.render("Felicitaciones, tu puntaje es de " + str(puntos) + "!, La última palabra correcta era: " + palabraCorrecta, True, COLOR_VERDE)
         text_rect = text.get_rect()
@@ -124,7 +133,7 @@ def dibujar(screen, listaDePalabrasUsuario, listaDiccionario, palabraUsuario, pu
         screen = pygame.display.set_mode((ANCHO, ALTO))
         pygame.mixer.music.stop()
         loss = pygame.mixer.Sound('./sonidos/loss.mp3')
-        loss.set_volume(0)
+        loss.set_volume(1)
         loss.play()
         text = defaultFont.render("Perdiste, tu puntaje es de " + str(puntos) + "!, La palabra correcta era: " + palabraCorrecta, True, COLOR_RED)
         text_rect = text.get_rect()
@@ -204,9 +213,9 @@ def dibujar(screen, listaDePalabrasUsuario, listaDiccionario, palabraUsuario, pu
             x += TAMANNO_LETRA
         y += TAMANNO_LETRA
 
-    # revision del estado del juego, gano o perdio
+    # revision del estado del juego, gano o perdio y sistema de records
 
-    if segundos < 0.01:
+    if segundos < 0.01 or intentos == 0:
         archivoPuntos=open("highscore.txt","r")
         record = archivoPuntos.readline()
 
@@ -230,7 +239,7 @@ def dibujar(screen, listaDePalabrasUsuario, listaDiccionario, palabraUsuario, pu
         if puntos == 0:
             perdiste()
         else:
-            endscreen()
+            ganaste()
         archivoPuntos.close()
     
    

@@ -38,6 +38,7 @@ def main():
     incorrectas = []
     casi = []
     gano = False
+    correctaAnterior = ''
 
     archivo = open("./lemario.txt", "r")
 
@@ -51,11 +52,11 @@ def main():
     # musica de fondo
 
     music = pygame.mixer.music.load('./sonidos/gta.mp3')
-    pygame.mixer.music.set_volume(0.0)
+    pygame.mixer.music.set_volume(0.6)
     pygame.mixer.music.play(-1)
     intentos = 5
 
-    dibujar(screen, ListaDePalabrasUsuario, listaPalabrasDiccionario, palabraUsuario, puntos, segundos, correctas, incorrectas, casi, intentos, palabraCorrecta)
+    dibujar(screen, ListaDePalabrasUsuario, listaPalabrasDiccionario, palabraUsuario, puntos, segundos, correctas, incorrectas, casi, intentos, palabraCorrecta, correctaAnterior)
 
     while segundos > fps/1000 and intentos > 0 and not gano:
         # 1 frame cada 1/fps segundos
@@ -93,11 +94,12 @@ def main():
                                 incorrectas = []
                                 casi = []
                                 gano = False
-                                intentos = 5
+                                intentos = 6
+                                correctaAnterior = palabraCorrecta                                
                                 palabraCorrecta = nuevaPalabra(listaPalabrasDiccionario)
-                                dibujar(screen, ListaDePalabrasUsuario, listaPalabrasDiccionario, palabraUsuario, puntos, segundos, correctas, incorrectas, casi, intentos, palabraCorrecta)
+                                dibujar(screen, ListaDePalabrasUsuario, listaPalabrasDiccionario, palabraUsuario, puntos, segundos, correctas, incorrectas, casi, intentos, palabraCorrecta, correctaAnterior)                                
+                                
                             palabraUsuario = ''
-                        else:
                             intentos -= 1
 
         segundos = TIEMPO_MAX - pygame.time.get_ticks()/1000
@@ -106,7 +108,7 @@ def main():
         screen.fill(COLOR_FONDO)
 
         #Dibujar de nuevo todo
-        dibujar(screen, ListaDePalabrasUsuario, listaPalabrasDiccionario, palabraUsuario, puntos, segundos, correctas, incorrectas, casi, intentos, palabraCorrecta)
+        dibujar(screen, ListaDePalabrasUsuario, listaPalabrasDiccionario, palabraUsuario, puntos, segundos, correctas, incorrectas, casi, intentos, palabraCorrecta, correctaAnterior)
 
         pygame.display.flip()
 
@@ -117,21 +119,22 @@ def main():
             if e.type == QUIT:
                 pygame.display.quit()
                 pygame.quit()
-                return ()
+                exit()
             if e.type == KEYDOWN:
                 letra = dameLetraApretada(e.key)
                 inputUsuario += letra
                 if inputUsuario == "s":
                     pygame.display.quit()
                     pygame.quit()
-                    exit()
+                    exit()    
                 elif inputUsuario == "j":
+                    pygame.display.quit()
+                    pygame.quit()
                     main()
             
     while 1:
-        if segundos < 0.01:
+        if segundos < 0.01 or intentos == 0:
             botonApretado()
-
 
     archivo.close()
 
