@@ -98,7 +98,6 @@ def main():
                                 correctaAnterior = palabraCorrecta                                
                                 palabraCorrecta = nuevaPalabra(listaPalabrasDiccionario)
                                 dibujar(screen, ListaDePalabrasUsuario, listaPalabrasDiccionario, palabraUsuario, puntos, segundos, correctas, incorrectas, casi, intentos, palabraCorrecta, correctaAnterior)                                
-                                
                             palabraUsuario = ''
                             intentos -= 1
 

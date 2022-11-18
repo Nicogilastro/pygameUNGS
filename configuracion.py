@@ -3,7 +3,7 @@
 TAMANNO_LETRA = 20
 TAMANNO_LETRA_GRANDE = 70
 FPS_inicial = 3
-TIEMPO_MAX = 121
+TIEMPO_MAX = 15
 
 ANCHO = 800
 ALTO = 600
@@ -17,10 +17,3 @@ COLOR_RED = (255, 0, 0)
 COLOR_VERDE = (0, 255, 0)
 COLOR_AZUL = (0, 0, 255)
 COLOR_BLANCO = (255, 255, 255)
-
-archivoPuntos = open("highscore.txt","r")
-RECORD = archivoPuntos.readline()
-archivoPuntos.close()
-
-
-
