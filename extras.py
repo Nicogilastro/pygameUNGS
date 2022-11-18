@@ -74,8 +74,6 @@ def dibujar(screen, listaDePalabrasUsuario, listaDiccionario, palabraUsuario, pu
     
     defaultFontGrande = pygame.font.Font(pygame.font.get_default_font(), TAMANNO_LETRA_GRANDE)
 
-    print(palabraCorrecta)
-
     screen = pygame.display.set_mode((ANCHO, ALTO))
     defaultFont = pygame.font.Font(pygame.font.get_default_font(), TAMANNO_LETRA)
     text = defaultFont.render("La última palabra correcta era: " + correctaAnterior, True, COLOR_VERDE)
