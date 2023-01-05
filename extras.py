@@ -3,7 +3,6 @@ import pygame
 from funcionesVACIAS import *
 from pygame.locals import *
 from configuracion import *
-    
 def dameLetraApretada(key):
     if key == K_a:
         return ("a")
@@ -68,34 +67,29 @@ def dameLetraApretada(key):
     else:
         return ("")
 
-pygame.init()
+pygame.init()    
 
-defaultFont = pygame.font.Font(pygame.font.get_default_font(), TAMANNO_LETRA)
-    
-defaultFontGrande = pygame.font.Font(pygame.font.get_default_font(), TAMANNO_LETRA_GRANDE)
+def colorIntentos(lista, palabraCorrecta, incorrectas, screen, defaultFontGrande):
+        pos = 0
+        for palabra in lista:
+            posX = 0
+            for i in range(len(palabra)):
+                if palabra[i] == palabraCorrecta[i]:
+                    color = COLOR_LETRAS                
+                    screen.blit(defaultFontGrande.render(palabra[i], 1, color),((ANCHO//2-len(palabra)*TAMANNO_LETRA_GRANDE//2) + posX, 30 + 80 * pos))
+                elif palabra[i] in palabraCorrecta:
+                    color = COLOR_AZUL
+                    screen.blit(defaultFontGrande.render(palabra[i], 1, color),((ANCHO//2-len(palabra)*TAMANNO_LETRA_GRANDE//2) + posX, 30 + 80 * pos))
+                elif palabra[i] in incorrectas:
+                    color = COLOR_RED
+                    screen.blit(defaultFontGrande.render(palabra[i], 1, color),((ANCHO//2-len(palabra)*TAMANNO_LETRA_GRANDE//2) + posX, 30 + 80 * pos))
+                posX += TAMANNO_LETRA_GRANDE
+            pos += 1
 
-screen = pygame.display.set_mode((ANCHO, ALTO))
-
-def colorIntentos(lista, palabraCorrecta, incorrectas):
-    pos = 0
-    for palabra in lista:
-        posX = 0
-        for i in range(len(palabra)):
-            if palabra[i] == palabraCorrecta[i]:
-                color = COLOR_LETRAS                
-                screen.blit(defaultFontGrande.render(palabra[i], 1, color),((ANCHO//2-len(palabra)*TAMANNO_LETRA_GRANDE//2) + posX, 30 + 80 * pos))
-            elif palabra[i] in palabraCorrecta:
-                color = COLOR_AZUL
-                screen.blit(defaultFontGrande.render(palabra[i], 1, color),((ANCHO//2-len(palabra)*TAMANNO_LETRA_GRANDE//2) + posX, 30 + 80 * pos))
-            elif palabra[i] in incorrectas:
-                color = COLOR_RED
-                screen.blit(defaultFontGrande.render(palabra[i], 1, color),((ANCHO//2-len(palabra)*TAMANNO_LETRA_GRANDE//2) + posX, 30 + 80 * pos))
-            posX += TAMANNO_LETRA_GRANDE
-        pos += 1
 
 # botones para la pantalla de reinicio
 
-def botones():
+def botones(screen, defaultFont):
     pygame.draw.rect(screen, COLOR_AZUL, [400, 400, 180 , 30])
     pygame.draw.rect(screen, COLOR_AZUL, [280, 400, 85 , 30])
     text = defaultFont.render('Jugar otra vez! (j)' , True , COLOR_BLANCO)
@@ -105,37 +99,37 @@ def botones():
 
 # end screen when win
 
-def ganaste(puntos, palabraCorrecta):
+def ganaste(puntos, palabraCorrecta, defaultFont):
     screen = pygame.display.set_mode((ANCHO, ALTO))
-    # pygame.mixer.music.stop()
-    # mta = pygame.mixer.Sound('./sonidos/mta.mp3')
-    # mta.set_volume(1)
-    # mta.play(-1)
+    pygame.mixer.music.stop()
+    mta = pygame.mixer.Sound('./sonidos/mta.mp3')
+    mta.set_volume(1)
+    mta.play(-1)
     text = defaultFont.render("Felicitaciones, tu puntaje es de " + str(puntos) + "!, La última palabra correcta era: " + palabraCorrecta, True, COLOR_VERDE)
     text_rect = text.get_rect()
     text_x = screen.get_width() / 2 - text_rect.width / 2
     text_y = screen.get_height() / 2 - text_rect.height / 2
     screen.blit(text, [text_x, text_y])
-    botones()
+    botones(screen, defaultFont)
     
 # end screen when loss
 
-def perdiste(puntos, palabraCorrecta):
+def perdiste(puntos, palabraCorrecta, defaultFont):
     screen = pygame.display.set_mode((ANCHO, ALTO))
-    # pygame.mixer.music.stop()
-    # loss = pygame.mixer.Sound('./sonidos/loss.mp3')
-    # loss.set_volume(1)
-    # loss.play()
+    pygame.mixer.music.stop()
+    loss = pygame.mixer.Sound('./sonidos/loss.mp3')
+    loss.set_volume(1)
+    loss.play()
     text = defaultFont.render("Perdiste, tu puntaje es de " + str(puntos) + "!, La palabra correcta era: " + palabraCorrecta, True, COLOR_RED)
     text_rect = text.get_rect()
     text_x = screen.get_width() / 2 - text_rect.width / 2
     text_y = screen.get_height() / 2 - text_rect.height / 2
     screen.blit(text, [text_x, text_y])
-    botones()
+    botones(screen, defaultFont)
 
 # revision del estado del juego, gano o perdio y sistema de records
 
-def estadoDelJuego(puntos, palabraCorrecta, record):
+def estadoDelJuego(puntos, palabraCorrecta, record, defaultFont):
     archivoPuntos=open("highscore.txt","r")
     record = archivoPuntos.readline()
 
@@ -157,29 +151,32 @@ def estadoDelJuego(puntos, palabraCorrecta, record):
         archivoPuntos.write(str(puntos))
 
     if puntos == 0:
-        perdiste(puntos, palabraCorrecta)
+        perdiste(puntos, palabraCorrecta, defaultFont)
     else:
-        ganaste(puntos, palabraCorrecta)
+        ganaste(puntos, palabraCorrecta, defaultFont)
     archivoPuntos.close()
     
 
 def dibujar(screen, listaDePalabrasUsuario, listaDiccionario, palabraUsuario, puntos, segundos, correctas, incorrectas, casi, intentos, palabraCorrecta, correctaAnterior):
-
     archivoPuntos = open("highscore.txt","r")
     RECORD = archivoPuntos.readline()
     archivoPuntos.close()
 
     defaultFont = pygame.font.Font(pygame.font.get_default_font(), TAMANNO_LETRA)
         
+    defaultFontGrande = pygame.font.Font(pygame.font.get_default_font(), TAMANNO_LETRA_GRANDE)
+
+    screen = pygame.display.set_mode((ANCHO, ALTO))
+    
     text = defaultFont.render("La última palabra correcta era: " + correctaAnterior, True, COLOR_VERDE)
     text_x = 400
     text_y = 500
     screen.blit(text, [text_x, text_y])
 
-    # color de las letras despues de intetar
+    #muestra las palabras anteriores, las que se fueron arriesgando
     
-    colorIntentos(listaDePalabrasUsuario, palabraCorrecta, incorrectas)
-
+    colorIntentos(listaDePalabrasUsuario, palabraCorrecta, incorrectas, screen, defaultFontGrande)
+    
     #Linea Horizontal
     pygame.draw.line(screen, (255, 255, 255), (0, ALTO-70), (ANCHO, ALTO-70), 5)
 
@@ -215,10 +212,6 @@ def dibujar(screen, listaDePalabrasUsuario, listaDiccionario, palabraUsuario, pu
         ren = defaultFont.render("Tiempo: " + str(int(segundos)), 1, COLOR_TEXTO)
         screen.blit(ren, (10, 10))
 
-    #muestra las palabras anteriores, las que se fueron arriesgando
-
-    colorIntentos(listaDePalabrasUsuario, palabraCorrecta, incorrectas)
-
     # muestra un mensaje para indicar que la palabra no se puede repetir
 
     for palabra in listaDePalabrasUsuario:
@@ -252,5 +245,5 @@ def dibujar(screen, listaDePalabrasUsuario, listaDiccionario, palabraUsuario, pu
         y += TAMANNO_LETRA
 
     if segundos < 0.01 or intentos == 0:
-        estadoDelJuego(puntos, palabraCorrecta, RECORD) 
+        estadoDelJuego(puntos, palabraCorrecta, RECORD, defaultFont) 
    

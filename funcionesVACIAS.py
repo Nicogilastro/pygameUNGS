@@ -20,11 +20,13 @@ def lectura(archivo, salida, largo):
 # chequea si la palabra ingresada por el usuario es correcta o no lo es, y las carga respectivamente a sus listas
 
 def revision(palabraCorrecta, palabra, correctas, incorrectas, casi):
+    if len(palabra) > len(palabraCorrecta):
+        palabra = ''
     if palabra == palabraCorrecta:
         return True
 
     for i in range(len(palabra)):
-        if palabra[i] == palabraCorrecta[i].lower() and palabra[i] not in correctas:
+        if palabra[i] == palabraCorrecta[i] and palabra[i] not in correctas:
             correctas.append(palabra[i])
             ding()
         elif palabra[i] in palabraCorrecta and palabra[i] not in casi and palabra[i] not in correctas:
@@ -34,20 +36,6 @@ def revision(palabraCorrecta, palabra, correctas, incorrectas, casi):
             incorrectas.append(palabra[i])
             dong()
     return False    
-
-# chequea la longitud de la palabra ingresada si es igual al de la palabra oculta
-
-def longitudPalabra(palabra, largo):
-    if len(palabra) == largo :
-        return True
-    return False
-
-# checkea si la letra esta en la lista de "casi"
-
-def letraEnCasi(letra, casi):
-    if letra in casi:
-        return True
-    return False
 
 # sonidos
 

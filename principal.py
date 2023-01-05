@@ -18,7 +18,7 @@ def main():
     #Centrar la ventana y despues inicializar pygame
     os.environ["SDL_VIDEO_CENTERED"] = "1"
     pygame.init()
-    #pygame.mixer.init()
+    pygame.mixer.init()
 
     #Preparar la ventana
     pygame.display.set_caption("La escondida...")
@@ -124,7 +124,6 @@ def main():
                 inputUsuario += letra
                 if inputUsuario == "s":
                     pygame.display.quit()
-                    pygame.quit()
                     exit()    
                 elif inputUsuario == "j":
                     pygame.display.quit()
